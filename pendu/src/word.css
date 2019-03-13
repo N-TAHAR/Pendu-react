@@ -1,0 +1,18 @@
+.word{
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.letter{
+  font-size: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  /* border: 1px solid black; */
+  font-weight: 600;
+}
+
+.letter:not(:last-child){
+  margin-right: 15px;
+}
+

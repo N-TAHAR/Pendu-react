@@ -1,0 +1,22 @@
+.keyBoard{
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  flex-flow: row wrap;
+  text-align: center;
+  width: 600px;
+  height: 200px;
+}
+
+.alpha{
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border: 1px solid black;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.alpha:not(:last-child){
+  margin-right: 10px;
+}

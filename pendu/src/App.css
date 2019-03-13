@@ -1,17 +1,21 @@
 body{
-  margin: 0;
+  margin: 20px;
   height: 100vh;
-}
-
-.word{
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.letter{
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  text-transform: uppercase;
-  border: 1px solid black;
+h1,ul,li,a,p{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  color: black;
 }
+
+
+
+

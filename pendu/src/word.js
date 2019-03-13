@@ -1,7 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-const Word = ({letter}) => (
-   <div className="letter">{letter}</div>
+import './word.css'
+
+const hidden = '_'
+
+const Word = ({letter, clickChecked}) => (
+      <li className="letter">{clickChecked.has(letter) ? letter : hidden}</li>
 )
 
 export default Word
