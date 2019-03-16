@@ -4,8 +4,8 @@ import './word.css'
 
 const hidden = '_'
 
-const Word = ({letter, clickChecked}) => (
-      <li className="letter">{clickChecked.has(letter) ? letter : hidden}</li>
+const Word = ({letter, clickChecked,}) => (
+      <li className='letter'>{clickChecked.has(letter) ? letter : hidden}</li>
 )
 
 export default Word

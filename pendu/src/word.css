@@ -16,3 +16,11 @@
   margin-right: 15px;
 }
 
+.correct{
+  background-color: green;
+}
+
+.wrong{
+  background-color: red;
+}
+
