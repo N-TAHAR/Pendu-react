@@ -6,31 +6,44 @@ import './App.css';
 import Word from './word'
 import KeyBoard from './keyBoard'
 
-const set = new Set()
 const matched = []
-
 
 class App extends Component {
 
+  // constructor(props){
+  //   super(props)
+  //   initialState = {
+  //     word: this.generateWords(),
+  //     guesses: 5,
+  //     keyBoard: this.alphabet(),
+  //     clicked: new Set(),
+  //     correct: new Set(matched[0]),
+  //     wrong: new Set(),
+  //     lose: false,
+  //     win: false
+  //   }
+  // }
+
   state = {
     word: this.generateWords(),
-    guesses: 0,
+    guesses: 5,
     keyBoard: this.alphabet(),
-    clicked: set,
-    matched1: set
+    clicked: new Set(),
+    correct: new Set(matched[0]),
+    wrong: new Set(),
+    lose: false,
+    win: false
   }
   
   generateWords() {
     const word = []
-    const words = ["Fleur", "Elephant", "Dinosaure", "Dispositif", "Camp", "Gorille", "Parents", "Charrue", "Arbre", "Chien", "Chat", "Sabou", "Karoui", "Romana", "Saoud"]
+    //const words = ["Fleur", "Elephant", "Dinosaure", "Dispositif", "Camp", "Gorille", "Parents", "Charrue", "Arbre", "Chien", "Chat", "Sabou", "Karoui", "Romana", "Saoud", "Amrane", "Benzina","Booba", "Anticonstitutionnellement", "Algerie", "Nintendo", "Stage","canopée", "moula", "perquisition", "braquage", "methamphetamine", "ketamine", "antivol"]
+    const words = ["canapé", "moula", "perquisition", "braquage", "methamphetamine", "ketamine", "antivol"]
     const memo =  shuffle(words).pop().toLowerCase();
-    // console.log(memo)
     for (let i = 0; i < memo.length; i++) {
       word.push(memo[i])
       matched.push(memo[i])
     }
-    console.log(matched)
-    console.log(word)
     return word
   }
 
@@ -40,64 +53,92 @@ class App extends Component {
       keyBoard.push(String.fromCharCode(i))
     }
     window.addEventListener('keypress', (e) =>{
-      console.log(e.key);
       this.verify(e.key);
     })
-    // console.log(keyBoard)
     return keyBoard
   }
 
   verify = alpha => {
+    if(this.state.lose === true){ 
+      return alert("C'est perdu ! Recharge la page.")
+    }
+    if(this.state.won === true){ return alert("C'est gagné ! Bien joué.")}
     alpha = alpha.toLowerCase()
-    const newGuesses = this.state.guesses + 1
     const newLetter = this.state.clicked.add( alpha )
-    // const newMatched = this.state.matched1.concat( alpha )
-    for (let i = 0; i < matched.length; i++)
-      if (matched[i] === alpha)
-        this.setState({matched1: this.state.matched1.add(alpha)})
-    this.setState({clicked: newLetter, guesses : newGuesses})
-    // console.log(this.state.matched1);
-    return this.correct(alpha)
+    this.setState({clicked: newLetter})
+    this.correct(alpha)
   }
 
-  correct = alpha => {
-    // console.log(alpha)
+  correct(alpha){
+    alpha = alpha.toLowerCase()
     for(let i = 0; i < matched.length; i++){
       if (matched[i] === alpha){
-        console.log('works')
-        return true
-      }
+        return this.setState({correct: this.state.correct.add(alpha)})
+      } 
     }
-    return false
-    // console.log(this.state.matched1)
+
+    if(this.state.guesses > 0){
+      const newGuesses = this.state.guesses - 1
+      this.setState({wrong: this.state.wrong.add(alpha), guesses: newGuesses})
+    }else{
+      this.state.lose = true
+      alert("C'est perdu")
+    }
   }
 
-  arraysEqual(array, set) {
+  won(array, set) {
     for(let i = 0; i < array.length; i++) {
         if(!set.has(array[i]))
             return false;
     }
+    this.state.won = true
     return true;
-}
+  }
 
+
+
+  // reset(){
+  //   console.log('yes')
+  //   // const newWord = this.generateWords()
+  //   // const newGuesses = 5
+  //   // const newKeyboard = this.alphabet()
+  //   // const newClicked = new Set()
+  //   // const newCorrect = this.alphabet()
+  //   // const newWrong = new Set()
+  //   // const
+
+  //   // this.state = {
+  //   //   word: this.generateWords(),
+  //   //   guesses: 5,
+  //   //   keyBoard: this.alphabet(),
+  //   //   clicked: new Set(),
+  //   //   correct: new Set(matched[0]),
+  //   //   wrong: new Set(),
+  //   //   lose: false,
+  //   //   win: false
+  //   // }
+  //   this.setState({wrong: this.state.wrong.add(alpha), guesses: newGuesses})
+
+  // }
+   
   render() {
-    const won = this.arraysEqual(matched, this.state.matched1)
-    // correct={this.state.clicked.has(letter)}
+    const won = this.won(matched, this.state.correct)
     return (
       <div className="App">
         <h1 className="title">PENDU</h1>
         <ul className="word">
           {this.state.word.map( (letter, index) =>(
-            <Word letter={letter} key={index} index={index} clickChecked={this.state.clicked}/>
+            <Word letter={letter} key={index} index={index} clickChecked={this.state.clicked.has(letter)}/>
           ))}
         </ul>
         <ul className="keyBoard">
           {this.state.keyBoard.map( (alpha, index) =>(
-            <KeyBoard alpha={alpha} key={index} index={index} onClick={this.verify}/>
+            <KeyBoard alpha={alpha} key={index} correct={this.state.correct.has(alpha.toLowerCase())} wrong={this.state.wrong.has(alpha.toLowerCase())} onClick={this.verify}/>
           ))}
         </ul>
         <p>Nombre de tentative : {this.state.guesses}</p>
-        {won && <p>Bravo</p>}
+        {won && alert('gagné')}
+        <button onClick={() => this.reset()}>Recommencer</button>
       </div>
     );
   }
