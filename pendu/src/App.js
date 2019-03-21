@@ -21,7 +21,8 @@ class App extends Component {
       correct: new Set(matched[0]),
       wrong: new Set(),
       lose: false,
-      win: false
+      win: false,
+      again: false
     }
     this.reset = this.reset.bind(this)
   }
@@ -29,8 +30,7 @@ class App extends Component {
   generateWords() {
     matched = []
     const word = []
-    //const words = ["Fleur", "Elephant", "Dinosaure", "Dispositif", "Camp", "Gorille", "Parents", "Charrue", "Arbre", "Chien", "Chat", "Sabou", "Karoui", "Romana", "Saoud", "Amrane", "Benzina","Booba", "Anticonstitutionnellement", "Algerie", "Nintendo", "Stage","canopée", "moula", "perquisition", "braquage", "methamphetamine", "ketamine", "antivol"]
-    const words = ["canape", "moula", "perquisition", "braquage", "methamphetamine", "ketamine", "antivol"]
+    const words = ["Fleur", "Elephant", "Dinosaure", "Dispositif", "Camp", "Gorille", "Parents", "Charrue", "Arbre", "Chien", "Chat", "Anticonstitutionnellement", "Algerie", "Nintendo", "Stage"]
     const memo =  shuffle(words).pop().toLowerCase();
     for (let i = 0; i < memo.length; i++) {
       word.push(memo[i])
@@ -61,8 +61,12 @@ class App extends Component {
     alpha = alpha.toLowerCase()
     for(let i = 0; i < matched.length; i++)
       if (matched[i] === alpha){ return this.setState({correct: this.state.correct.add(alpha)})} 
-    const newGuesses = this.state.guesses - 1
-    this.setState({wrong: this.state.wrong.add(alpha), guesses: newGuesses})
+    // let newGuesses = this.state.guesses - 1
+    // if(this.state.again === true){ 
+    //   newGuesses = this.state.guesses + 1
+    //   // this.setState({again: false})    
+    // }
+    this.setState({wrong: this.state.wrong.add(alpha), guesses: this.state.guesses - 1})
     if(this.state.guesses === 0){ this.setState({lose: true}) }
   }
 
@@ -83,7 +87,8 @@ class App extends Component {
       correct: new Set(matched[0]),
       wrong: new Set(),
       lose: false,
-      win: false
+      win: false,
+      again: true
     }) 
   }
    
