@@ -18,9 +18,25 @@
 
 .correct{
   background-color: green;
+  color: white;
 }
 
 .wrong{
   background-color: red;
+}
+
+.result{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  animation: result 1s forwards;
+}
+
+@keyframes result{
+  to{
+    transform: translate(-50%, -50%) scale(6);    
+  }
 }
 
