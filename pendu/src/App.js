@@ -25,6 +25,10 @@ class App extends Component {
       again: false
     }
     this.reset = this.reset.bind(this)
+    window.addEventListener('keypress', (e) =>{
+      if(e.keyCode === 13 || e.keyCode === 32){return}
+      this.verify(e.key);
+    })
   }
   
   generateWords() {
@@ -36,7 +40,6 @@ class App extends Component {
       word.push(memo[i])
       matched.push(memo[i])
     }
-    console.log(matched)
     return word
   }
 
@@ -44,9 +47,6 @@ class App extends Component {
     const keyBoard = []
     for (let i = 65; i <= 90; i++) 
       keyBoard.push(String.fromCharCode(i))
-    window.addEventListener('keypress', (e) =>{
-      this.verify(e.key);
-    })
     return keyBoard
   }
 
@@ -67,7 +67,12 @@ class App extends Component {
     //   // this.setState({again: false})    
     // }
     this.setState({wrong: this.state.wrong.add(alpha), guesses: this.state.guesses - 1})
-    if(this.state.guesses === 0){ this.setState({lose: true}) }
+    if(this.state.guesses === 0){ 
+      this.setState({lose: true}) 
+      window.addEventListener("keypress", (e)=>{
+        if(e.keyCode === 13){this.reset()}
+      })
+    }
   }
 
   won(array, set) {
@@ -75,10 +80,12 @@ class App extends Component {
         if(!set.has(array[i]))
             return
     this.setState({win: true})
+    window.addEventListener("keypress", (e)=>{
+      if(e.keyCode === 13){this.reset()}
+    })
   }
 
   reset(){
-    console.log('yes')
     this.setState({
       word: this.generateWords(),
       guesses: guesses,
@@ -89,7 +96,8 @@ class App extends Component {
       lose: false,
       win: false,
       again: true
-    }) 
+    })
+    window.removeEventListener("keypress", ()=>{})
   }
    
   render() {
