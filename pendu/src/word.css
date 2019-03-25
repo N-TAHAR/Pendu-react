@@ -1,7 +1,9 @@
 .word{
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 100px;
+  width: 300px;
 }
 
 .keyBoard{
@@ -30,9 +32,29 @@
   color: white;
 }
 
+.guesses{
+  font-size: 16px;
+}
+
+.guesses span{
+  font-size: 25px;
+  font-weight: bold;
+}
+
 button{
-  margin-top: 50px;
-  
+  justify-self: flex-end;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: green;
+  cursor: pointer;
+}
+
+button:focus{
+  outline: none;
 }
 
 .result{

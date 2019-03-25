@@ -52,22 +52,25 @@ class App extends Component {
 
   verify = alpha => {
     if(this.state.win === true){ return }
-    if(this.state.lose === true){ return }
+    if(this.state.lose === true || this.state.guesses === 0){ 
+      this.setState({lose: true})
+      return 
+    }
     this.correct(alpha)
     this.won(matched, this.state.correct)
   }
 
   correct(alpha){
     alpha = alpha.toLowerCase()
-    for(let i = 0; i < matched.length; i++)
+    // console.log(alpha)
+    for(let i = 0; i < matched.length; i++){
       if (matched[i] === alpha){ return this.setState({correct: this.state.correct.add(alpha)})} 
-    // let newGuesses = this.state.guesses - 1
-    // if(this.state.again === true){ 
-    //   newGuesses = this.state.guesses + 1
-    //   // this.setState({again: false})    
-    // }
-    this.setState({wrong: this.state.wrong.add(alpha), guesses: this.state.guesses - 1})
+    }
+    const newGuesses = this.state.guesses - 1
+    this.setState({wrong: this.state.wrong.add(alpha), guesses: newGuesses})
+    // console.log(this.state.guesses)
     if(this.state.guesses === 0){ 
+      // console.log('ça entre')
       this.setState({lose: true}) 
       window.addEventListener("keypress", (e)=>{
         if(e.keyCode === 13){this.reset()}
@@ -89,7 +92,6 @@ class App extends Component {
     this.setState({
       word: this.generateWords(),
       guesses: guesses,
-      keyBoard: this.alphabet(),
       clicked: new Set(),
       correct: new Set(matched[0]),
       wrong: new Set(),
@@ -104,20 +106,28 @@ class App extends Component {
     const result = this.state.win || this.state.lose
     return (
       <div className="App">
-        <h1 className="title">PENDU</h1>
-        <ul className="word">
-          {this.state.word.map( (letter, index) =>(
-            <Word letter={letter} key={index} index={index} clickChecked={this.state.correct.has(letter)}/>
-          ))}
-        </ul>
-        {result && <span className="result">YOU {this.state.win ? 'WIN' : 'LOSE'}</span>}
-        <ul className="keyBoard">
-          {this.state.keyBoard.map( (alpha, index) =>(
-            <KeyBoard alpha={alpha} key={index} correct={this.state.correct.has(alpha.toLowerCase())} wrong={this.state.wrong.has(alpha.toLowerCase())} onClick={this.verify}/>
-          ))}
-        </ul>
-        <p>Nombre de tentative : {this.state.guesses}</p>
-        <button onClick={this.reset}>Recommencer</button>
+        <header>
+          <h1 className="title">PENDU</h1>
+        </header>
+        <main>
+          <div className="board">
+            <ul className="word">
+              {this.state.word.map( (letter, index) =>(
+                <Word letter={letter} key={index} index={index} clickChecked={this.state.correct.has(letter)}/>
+              ))}
+            </ul>
+            {result && <span className="result">YOU {this.state.win ? 'WIN' : 'LOSE'}</span>}
+            <ul className="keyBoard">
+              {this.state.keyBoard.map( (alpha, index) =>(
+                <KeyBoard alpha={alpha} key={index} correct={this.state.correct.has(alpha.toLowerCase())} wrong={this.state.wrong.has(alpha.toLowerCase())} onClick={this.verify}/>
+              ))}
+            </ul>
+          </div>
+          <div className="info">
+            <p className="guesses">Il vous reste <span>{this.state.guesses}</span> {this.state.guesses > 1 ?  'tentatives' : 'tentative'}.</p>
+            <button onClick={this.reset}>Recommencer</button>
+          </div>
+        </main>
       </div>
     );
   }
