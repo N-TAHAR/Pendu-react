@@ -31,4 +31,56 @@ h1,ul,li,a,p{
   margin-top: 100px;
 }
 
+.correct{
+  background-color: green;
+  color: white;
+}
+
+.wrong{
+  background-color: red;
+  color: white;
+}
+
+
+.guesses{
+  font-size: 16px;
+}
+
+.guesses span{
+  font-size: 25px;
+  font-weight: bold;
+}
+
+button{
+  justify-self: flex-end;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: green;
+  cursor: pointer;
+}
+
+button:focus{
+  outline: none;
+}
+
+.result{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  animation: result 1s forwards;
+}
+
+@keyframes result{
+  to{
+    transform: translate(-50%, -50%) scale(6);    
+  }
+}
+
+
 
