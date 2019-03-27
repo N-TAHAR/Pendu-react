@@ -52,30 +52,25 @@ class App extends Component {
 
   verify = alpha => {
     if(this.state.win === true){ return }
-    if(this.state.lose === true || this.state.guesses === 0){ 
-      this.setState({lose: true})
-      return 
-    }
+    if(this.state.lose === true){ return }
     this.correct(alpha)
     this.won(matched, this.state.correct)
   }
 
   correct(alpha){
     alpha = alpha.toLowerCase()
-    // console.log(alpha)
     for(let i = 0; i < matched.length; i++){
       if (matched[i] === alpha){ return this.setState({correct: this.state.correct.add(alpha)})} 
     }
-    const newGuesses = this.state.guesses - 1
-    this.setState({wrong: this.state.wrong.add(alpha), guesses: newGuesses})
-    // console.log(this.state.guesses)
-    if(this.state.guesses === 0){ 
-      // console.log('ça entre')
-      this.setState({lose: true}) 
-      window.addEventListener("keypress", (e)=>{
-        if(e.keyCode === 13){this.reset()}
-      })
-    }
+    const newGuesses = this.state.guesses - 1;
+    this.setState({wrong: this.state.wrong.add(alpha), guesses: newGuesses}, () => {
+      if(this.state.guesses === 0){ 
+        this.setState({lose: true}) 
+        window.addEventListener("keypress", (e)=>{
+          if(e.keyCode === 13){this.reset()}
+        })
+      }
+    });
   }
 
   won(array, set) {
